@@ -1,0 +1,8 @@
+<p>
+  <code>onReset$.next(val) => onReset$.subscribe((val) => exp)</code> <br>
+  <input type="text" [ngModel]="amount"/>
+  <button (click)="onReset$.next(0)">Reset</button>
+</p>
+<ul>
+  <li *ngFor="let bookmark of bookmarks$|async">{{bookmark}}</li>
+</ul>
