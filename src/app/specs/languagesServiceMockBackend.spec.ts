@@ -1,9 +1,9 @@
 import {inject, TestBed, async} from '@angular/core/testing';
 import {HttpModule, XHRBackend, Response, ResponseOptions} from '@angular/http';
-import {LanguagesServiceHttp} from '../services/languagesServiceHttp';
 import {MockBackend} from '@angular/http/testing';
+import {LanguagesService} from '../services/languagesService';
 
-describe('MockBackend: LanguagesServiceHttp', () => {
+describe('MockBackend: LanguagesService', () => {
   let mockbackend;
   let service;
 
@@ -12,13 +12,13 @@ describe('MockBackend: LanguagesServiceHttp', () => {
     TestBed.configureTestingModule({
       imports: [HttpModule],
       providers: [
-        LanguagesServiceHttp,
+        LanguagesService,
         {provide: XHRBackend, useClass: MockBackend}
       ]
     });
   });
 
-  beforeEach(inject([LanguagesServiceHttp, XHRBackend], (newService, newMockbackend) => {
+  beforeEach(inject([LanguagesService, XHRBackend], (newService, newMockbackend) => {
     service = newService;
     mockbackend = newMockbackend;
   }));

@@ -4,7 +4,7 @@ import {
   HttpTestingController,
 } from '@angular/common/http/testing';
 import {HTTP_INTERCEPTORS} from '@angular/common/http';
-import {AuthHttpInterceptor, DataService} from '../services/httpInterceptor';
+import {AuthHttpInterceptor, DataService, Post} from '../services/httpInterceptor';
 
 describe(`AuthHttpInterceptor`, () => {
   let service: DataService;
@@ -28,7 +28,7 @@ describe(`AuthHttpInterceptor`, () => {
   });
 
   it('should add an Authorization header', () => {
-    service.getPosts().subscribe(response => {
+    service.getPosts().subscribe((response: Post[]) => {
       expect(response).toBeTruthy();
     });
 

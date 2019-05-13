@@ -3,19 +3,65 @@
   <h1>
     Welcome to {{ title }}!
   </h1>
-  <img width="300" alt="Angular Logo" src="data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHZpZXdCb3g9IjAgMCAyNTAgMjUwIj4KICAgIDxwYXRoIGZpbGw9IiNERDAwMzEiIGQ9Ik0xMjUgMzBMMzEuOSA2My4ybDE0LjIgMTIzLjFMMTI1IDIzMGw3OC45LTQzLjcgMTQuMi0xMjMuMXoiIC8+CiAgICA8cGF0aCBmaWxsPSIjQzMwMDJGIiBkPSJNMTI1IDMwdjIyLjItLjFWMjMwbDc4LjktNDMuNyAxNC4yLTEyMy4xTDEyNSAzMHoiIC8+CiAgICA8cGF0aCAgZmlsbD0iI0ZGRkZGRiIgZD0iTTEyNSA1Mi4xTDY2LjggMTgyLjZoMjEuN2wxMS43LTI5LjJoNDkuNGwxMS43IDI5LjJIMTgzTDEyNSA1Mi4xem0xNyA4My4zaC0zNGwxNy00MC45IDE3IDQwLjl6IiAvPgogIDwvc3ZnPg==">
+  <img width="30" alt="Angular Logo" src="data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHZpZXdCb3g9IjAgMCAyNTAgMjUwIj4KICAgIDxwYXRoIGZpbGw9IiNERDAwMzEiIGQ9Ik0xMjUgMzBMMzEuOSA2My4ybDE0LjIgMTIzLjFMMTI1IDIzMGw3OC45LTQzLjcgMTQuMi0xMjMuMXoiIC8+CiAgICA8cGF0aCBmaWxsPSIjQzMwMDJGIiBkPSJNMTI1IDMwdjIyLjItLjFWMjMwbDc4LjktNDMuNyAxNC4yLTEyMy4xTDEyNSAzMHoiIC8+CiAgICA8cGF0aCAgZmlsbD0iI0ZGRkZGRiIgZD0iTTEyNSA1Mi4xTDY2LjggMTgyLjZoMjEuN2wxMS43LTI5LjJoNDkuNGwxMS43IDI5LjJIMTgzTDEyNSA1Mi4xem0xNyA4My4zaC0zNGwxNy00MC45IDE3IDQwLjl6IiAvPgogIDwvc3ZnPg==">
 </div>
-<h2>Here are some links to help you start: </h2>
+<h2>Subjects: next, subscribe, unsubscribe</h2>
+
+<app-amount-box [amount]="childAmount" (changeAmount)="changeAmount()"></app-amount-box>
+
+<!--<router-outlet></router-outlet>-->
+
+<h2>Jasmine - Main concepts</h2>
 <ul>
   <li>
-    <h2><a target="_blank" rel="noopener" href="https://angular.io/tutorial">Tour of Heroes</a></h2>
+    Suites — describe(string, function) functions, take a title and a function containing one or more specs.
   </li>
   <li>
-    <h2><a target="_blank" rel="noopener" href="https://angular.io/cli">CLI Documentation</a></h2>
+    Specs — it(string, function) functions, take a title and a function containing one or more expectations.
   </li>
   <li>
-    <h2><a target="_blank" rel="noopener" href="https://blog.angular.io/">Angular blog</a></h2>
+    Expectations — are assertions that evaluate to true or false. Basic syntax reads expect(actual).toBe(expected)
+  </li>
+  <li>
+    Matchers — are predefined helpers for common assertions. Eg: toBe(expected), toEqual(expected). Find a complete list here.
   </li>
 </ul>
 
-<router-outlet></router-outlet>
+<p>
+  Use TestBed to load the corresponding dependencies so they are available during your tests
+</p>
+
+<p>
+  Using fakeAsync/tick we get greater control of the asynchronous code although it can’t be used with XHR.
+</p>
+
+<form (ngSubmit)="login()"
+      [formGroup]="form">
+  <label>Email</label>
+  <input type="email"
+         formControlName="email">
+  <label>Password</label>
+  <input type="password"
+         formControlName="password">
+  <button type="submit">Login</button>
+</form>
+
+<h2>
+  NGRX - Main concepts
+</h2>
+
+<ul>
+  <li>Install lib ngrx</li>
+  <li>Create structure of folders for Store</li>
+  <li>Create State and initial values</li>
+  <li>Create Actions</li>
+  <li>Create Reducers</li>
+  <li>Create Effects</li>
+  <li>Create Selectors</li>
+  <li>Merge all entities together</li>
+  <li>Use Stores in some components</li>
+</ul>
+
+<a class="navbar" routerLink="/">
+  NGRX / {{ (config$ | async)?.adminName }}
+</a>

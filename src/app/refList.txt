@@ -1,0 +1,159 @@
+TDD-KARMA-JASMINE
+
+1. Component
+
+  app.component.spec.ts
+  1) should create the app
+  2) should have as title 'rxjs-jasmine tutor'
+  3) should render title in a h1 tag
+  4) form invalid when empty
+  5) email field validity
+  6) password field validity
+  7) submitting a form emits a user
+
+2. Directive
+
+  logClicksDirective.spec.ts
+  1) should increment counter (async)
+  2) should increment counter (fakeAsync/tick)
+  3) should increment counter (done)
+
+3. Pipe
+
+  capitalisePipe.spec.ts
+  1) should work with empty string
+  2) should capitalise
+  3) should throw with invalid values
+
+4. Service with MockBackend
+
+  languagesServiceMockBackend.spec.ts
+  1) should return mocked response (async)
+  2) should return mocked response (done)
+
+
+5. Observables
+
+  observables.spec.ts
+  1) should create the expected sequence (async)
+  2) should create the expected sequence (fakeAsync/tick)
+  3) should create the expected sequence (done)
+
+6. HttpClient
+
+  gitServiceHttp.spec.ts
+  1) should return an Observable<User[]>
+  2) should throw an error if trying to search for not supported `category`
+
+7. Interceptors
+
+  httpInterceptor.spec.ts
+  1) should add an Authorization header
+
+8. Routing
+
+  app-routing.module.spec.ts
+  1) default route redirects to home (fakeAsync/tick)
+  2) can navigate to home (fakeAsync/tick)
+  3) should redirect unexisting urls to Home (fakeAsync/tick)
+
+
+SUBJECTS-RXJS-NGRX
+
+1. Store
+  1) Actions
+  user.actions.ts
+  export enum EUserActions {
+    GetUsers = '[User] Get Users',
+    GetUsersSuccess = '[User] Get Users Success',
+    GetUser = '[User] Get User',
+    GetUserSuccess = '[User] Get User Success'
+  }
+  ...
+  export class GetUsersSuccess implements Action {
+    public readonly type = EUserActions.GetUsersSuccess;
+    constructor(public payload: IUser[]) {}
+  }
+  ...
+  export type UserActions = GetUsers | GetUsersSuccess | GetUser | GetUserSuccess;
+
+  2) Effects
+  user.effects.ts
+  @Effect()
+    getUser$ = this._actions$.pipe(
+      ofType<GetUser>(EUserActions.GetUser),
+      map(action => action.payload),
+      withLatestFrom(this._store.pipe(select(selectUserList))),
+      switchMap(([id, users]) => {
+        const selectedUser = users.filter(user => user.id === +id)[0];
+        return of(new GetUserSuccess(selectedUser));
+      })
+    );
+
+  3) Reducers
+  user.reducers.ts
+  export const userReducers = (
+    state = initialUserState,
+    action: UserActions
+  ): IUserState => {
+    switch (action.type) {
+      case EUserActions.GetUsersSuccess: {
+        return {
+          ...state,
+          users: action.payload
+        };
+      }
+      ...
+
+      default:
+        return state;
+    }
+  };
+
+  4) Selectors
+  user.selector.ts
+  const selectUsers = (state: IAppState) => state.users;
+
+  export const selectUserList = createSelector(
+    selectUsers,
+    (state: IUserState) => state.users
+  );
+
+  5) State
+  user.state.ts
+  export interface IUserState {
+    users: IUser[];
+    selectedUser: IUser;
+  }
+
+  export const initialUserState: IUserState = {
+    users: null,
+    selectedUser: null
+  };
+
+2. Using
+  1) Create independent interfaces for each entity
+  2) Create interface with structure of the entity's state
+  3) Generate state of app (entity state, router state, initial states, export)
+  4) Create action for each entity (tag name and action, export all types)
+  5) Create reducers only for pure actions
+    Input state and an action
+    Create switch for every type of an action
+    Output new state of entity's interface
+  6) Create effects for actions with interferences
+    Create pipe to handle effect
+    Define type of action by operator ofType
+    Handle your streams with useful rxjs-operators
+    Return observable with payload
+  7) Create selectors for each useful entity in some state
+    1st parameter is fragment of some state
+    2nd parameter is anonymous function which return selector
+  8) Bootstrap store in main module
+    Import reducers into state.module.forRoot()
+    Import reducers into effects.module.forRoot()
+    Include settings to StoreRouterConnectingModule
+    Include instruments StoreDevtoolsModule.instrument()
+
+    Use your store in any components:
+    HTML: {{ someObservable | async }}
+    TS: this._store.dispatch(new Entity(payload));

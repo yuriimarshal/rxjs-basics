@@ -1,20 +1,33 @@
 import {Injectable} from '@angular/core';
-import 'rxjs/add/operator/map';
-import {HttpClient, HttpHeaders, HttpParams} from '@angular/common/http';
-import {Observable, ErrorObserver} from 'rxjs';
+import {HttpClient, HttpParams} from '@angular/common/http';
+import {Observable} from 'rxjs';
+import 'rxjs/add/observable/throw';
+
+export interface User {
+  login: string;
+}
+
+export interface SearchResults<T> {
+  items: T[];
+}
 
 @Injectable()
-export class LanguagesServiceHttp {
-  private options = {
-    headers: new HttpHeaders({'Content-Type': 'application/json'}),
-    withCredentials: true
-  };
+export class GithubApiService {
+  readonly BASE_URL = 'https://api.github.com';
+  readonly CATEGORIES = ['repositories', 'commits', 'code', 'issues', 'users'];
 
-  constructor(private httpClient: HttpClient) {
+  constructor(private http: HttpClient) {
   }
 
-  get(url: string, params?: HttpParams): Observable<any> {
-    return this.httpClient.get('./languages.json', {...this.options, params})
-      .catch(error => ErrorObserver.create(error.error));
+  getUsers() {
+    return this.http.get<User[]>(`${this.BASE_URL}/users`);
   }
+
+  search<T>(what: string, params: HttpParams): Observable<SearchResults<T>> {
+    if (this.CATEGORIES.indexOf(what) === -1) {
+      return Observable.throw(`Searching for ${what} is not supported. The available types are: ${this.CATEGORIES.join(', ')}.`);
+    }
+    return this.http.get<SearchResults<T>>(`${this.BASE_URL}/search/${what}`, {params});
+  }
+
 }
